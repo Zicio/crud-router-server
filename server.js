@@ -39,15 +39,23 @@ router.get("/posts", async (ctx, next) => {
 });
 
 router.post("/posts", async (ctx, next) => {
-  const { id, content } = ctx.request.body;
-
+  const data = JSON.parse(ctx.request.body);
+  const { id, content } = data;
+  console.log(id);
   if (id !== 0) {
     posts = posts.map((o) => (o.id !== id ? o : { ...o, content: content }));
     ctx.response.status = 204;
     return;
   }
 
-  posts.push({ ...ctx.request.body, id: uuidv4(), created: Date.now() });
+  posts.push({
+    ...data,
+    id: uuidv4(),
+    author: author,
+    photo: photo,
+    created: Date.now(),
+  });
+  console.log(posts);
   ctx.response.status = 204;
 });
 
