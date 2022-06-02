@@ -9,7 +9,7 @@ const { faker } = require("@faker-js/faker");
 const app = new Koa();
 
 app.use(cors());
-app.use(koaBody({ json: true }));
+app.use(koaBody({ json: true, urlencoded: true }));
 
 const author = faker.name.findName();
 const photo = faker.image.avatar();
@@ -36,6 +36,14 @@ const router = new Router();
 
 router.get("/posts", async (ctx, next) => {
   ctx.response.body = posts;
+});
+
+router.get("/posts/:id", async (ctx, next) => {
+  const postId = ctx.params.id;
+  const post = posts.find((o) => o.id === postId);
+  if (post) {
+    ctx.response.body = post;
+  }
 });
 
 router.post("/posts", async (ctx, next) => {
