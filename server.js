@@ -49,7 +49,6 @@ router.get("/posts", async (ctx, next) => {
 router.post("/posts", async (ctx, next) => {
   const data = JSON.parse(ctx.request.body);
   const { id, content } = data;
-  console.log(id);
   if (id !== 0) {
     posts = posts.map((o) => (o.id !== id ? o : { ...o, content: content }));
     ctx.response.status = 204;
@@ -63,13 +62,11 @@ router.post("/posts", async (ctx, next) => {
     photo: photo,
     created: Date.now(),
   });
-  console.log(posts);
   ctx.response.status = 204;
 });
 
 router.delete("/posts", async (ctx, next) => {
   const postId = ctx.request.query.id;
-  console.log(postId);
   const index = posts.findIndex((o) => o.id === postId);
   if (index !== -1) {
     posts.splice(index, 1);
